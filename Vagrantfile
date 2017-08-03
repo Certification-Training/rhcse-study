@@ -4,7 +4,8 @@ Vagrant.configure('2') do |config|
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   config.vm.provider 'virtualbox' do |vb|
-    vb.gui = false
+    # Want this on to work on bootloader stuff
+    vb.gui = true
   end
 
   config.vm.network :private_network, ip: '10.0.0.10'
