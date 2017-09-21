@@ -11,5 +11,5 @@ Vagrant.configure('2') do |config|
   config.vm.network :private_network, ip: '10.0.0.10'
   config.vm.hostname = 'rhcse-study-vm-1'
   config.vm.provision "shell",
-    inline: "sudo yum -y install man man-pages"
+    inline: "sudo yum -y install man man-pages bash-completion vim"
 end

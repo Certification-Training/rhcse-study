@@ -33,6 +33,7 @@ broadcast address: 192.168.122.255 (last address)
 subnet mask: 255.255.255.0  (the /24 in dotted decimal)
 
 Q: why assign a interface an IP and a netmask? Why not just an IP?
+A: You have to tell it what "group" it's in. So you assign it a specific IP, then a mask. and that's the stuff it's allowed to talk to before forwarding the default gateway.
 
 # Network tools
 
@@ -51,4 +52,36 @@ Use `sudo ss -tunap4` to see processes using ports. If no `sudo` is specified, t
 
 Use `systemctl status network` and `nmcli dev status` to check logs and interface status. Use `systemctl restart network` if you lose wifi.
 
-# Stopping at "Network Configuration Tools"
+I'm trying to set up a different profile for enp0s3, but I'm failing at:
+
+```
+root@rhcse-study-vm-1 ~]# nmcli connection add con-name "enp0s8-work" type ethernet ifname enp0s8
+Connection 'enp0s8-work' (bd40239a-b3c0-473b-a98e-958139d73f10) successfully added.
+
+[root@rhcse-study-vm-1 ~]# nmcli con mod "enp0s8-work" ipv4.addresses "192.168.20.100/24 192.168.20.1"
+Error: failed to modify ipv4.addresses: invalid prefix '24 192.168.20.1'; <1-32> allowed.
+```
+
+I should use `nmtui` for all my IP configuration needs! So much easier than `nmcli`
+
+A lot of the network configs are actually stored in `/etc/sysconfig/network-scripts`
+
+## Hostname Configuration Files
+
+- `/etc/hostname`
+
+Name me
+
+- `/etc/hosts`
+
+Handwrite some hosts, baby!
+
+- `/etc/resolv.conf`
+
+nameserver locations. Overwritten by Network Manager
+
+- `/etc/nsswitch.conf`
+
+Specifies priorities for looking up hosts with the `host: files dns myhostname` line
+
+# Stopped at "Hostname Configuration Options"
