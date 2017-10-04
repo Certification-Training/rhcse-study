@@ -46,7 +46,7 @@ A: You have to tell it what "group" it's in. So you assign it a specific IP, the
 
 When using `traceroute`, sometimes a firewall will bock UDP packets. If so, run it with the `-I` or `-T` for ICMP or TCP probe packets.
 
-Use `dhclient <interface>` to call DHCP for an IP address
+Use `dhclient <interface>` to call DHCP for an IP address, and sets up a default route and adds DNS server to /etc/resolv.conf
 
 Use `sudo ss -tunap4` to see processes using ports. If no `sudo` is specified, then you don't get process IDs
 
@@ -84,4 +84,8 @@ nameserver locations. Overwritten by Network Manager
 
 Specifies priorities for looking up hosts with the `host: files dns myhostname` line
 
-# Stopped at "Hostname Configuration Options"
+`ifup <interface>` turns up an interface
+
+## Questions
+
+9. ip addr add 192.168.100.100/24 dev eth0
