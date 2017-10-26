@@ -56,3 +56,4 @@ These are like more fine grained permissions. To let user `micheal` specifically
 Before that works, though, we need to set it on the directory.
 
 # Stopped at TABLE 4-5
+## TODO: go through the exercise and use ACLs on a /srv/shared-files dir
