@@ -4,7 +4,7 @@ I'm using [RHCSA/RHCE Red Hat Linux Certification Study Guide, Seventh Edition (
 
 ## Install
 
-- Virtualbox
+- Virtualbox (I'm using 5.1)
 - [vagrant 1.8.7](https://releases.hashicorp.com/vagrant/1.8.7/)
 
 ## Run:
