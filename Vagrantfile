@@ -1,3 +1,5 @@
+# time on 2017-10-26 for vagrant up: 2.5 min
+
 Vagrant.configure('2') do |config|
   config.vm.box = 'bento/centos-7.3'
   # Disable the default synced folder because it's too much trouble to set up
@@ -10,6 +12,5 @@ Vagrant.configure('2') do |config|
 
   config.vm.network :private_network, ip: '10.0.0.10'
   config.vm.hostname = 'rhcse-study-vm-1'
-  config.vm.provision "shell",
-    inline: "sudo yum -y install man man-pages bash-completion vim"
+  config.vm.provision 'shell', path: 'shell_provision.sh'
 end
