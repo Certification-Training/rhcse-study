@@ -10,11 +10,14 @@ IFS=$'\n\t'
 
 # this script runs as root
 
+set -x
+
 sudo yum -y install man man-pages bash-completion vim
-sudo yum -y reinstall setup  # to get some /usr/share/doc stuff back
 
 # add another user to play with ACLs (chap4)
 sudo adduser michael
 
-# lol this ain't prod
+# set the password for Michael
 echo michael:michael | chpasswd
+
+set +x
