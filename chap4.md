@@ -55,5 +55,40 @@ These are like more fine grained permissions. To let user `micheal` specifically
 
 Before that works, though, we need to set it on the directory.
 
-# Stopped at TABLE 4-5
-## TODO: go through the exercise and use ACLs on a /srv/shared-files dir
+Table 4-5 has a nice table about acl options.
+
+I'm skipping the nfs_acl stuff.
+
+Now I'm on iptables.
+
+To get iptables back, I need `yum install iptables-services`
+
+Standard ports are in /etc/services
+
+A basic iptables flowchart
+
+```
+iptables 
+  -t  # tabletype
+    filter  # filter packets, default
+    nat  # aka masquerading
+  <action_direction>
+    -A, --append  # append rule to end of chain
+      INPUT  # incomng packets
+      OUTPUT  # outging packets
+      FORWARD  # packets routed through me
+    -D, --delete  # delete rule by number or packet pattern
+      INPUT  # incomng packets
+      OUTPUT  # outging packets
+      FORWARD  # packets routed through me
+    -L, --list  # list rules in chain
+    -F, --flush # flushes all rules in current iptables chain
+  <packet_pattern>
+    -s <ip_address>  # All packets are checked for a specific source IP
+    -d <ip_address>  # All packets are checked for a specific dest IP
+    -p <protocol> --dport <port_num>
+  -j <what_to_do>
+    DROP
+    REJECT
+    ACCEPT
+```

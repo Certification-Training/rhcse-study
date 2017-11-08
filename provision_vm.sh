@@ -20,4 +20,7 @@ sudo adduser michael
 # set the password for Michael
 echo michael:michael | chpasswd
 
+# chap4
+yum -y install iptables-services
+
 set +x
