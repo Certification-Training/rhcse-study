@@ -35,7 +35,7 @@ There are other attributes, but not for ext4 and XFS filesystems
 you auto-add the executable bit. It seems to work by starting with base
 permissions (0777 for dirs, 0666 for files), and subtracting the umask (default
 0002 for users and 0022 for root). This means, by default, the permissions for
-dirs are 0777 - 0002 == 1775 and for files is 0666 - 0002 == 0664.
+dirs are 0777 - 0002 == 0775 and for files is 0666 - 0002 == 0664.
 
 ACLs
 
@@ -87,8 +87,33 @@ iptables
     -s <ip_address>  # All packets are checked for a specific source IP
     -d <ip_address>  # All packets are checked for a specific dest IP
     -p <protocol> --dport <port_num>
+    -i <interface>
   -j <what_to_do>
     DROP
     REJECT
     ACCEPT
 ```
+
+## firewalld
+
+Firewalld uses a "zones" concept to decide what to do with packets. A zone has two parts:
+- what's in it (source addresses/interfaces)
+- what to do with traffic coming to it (drop, accept, etc)
+
+Table 4-8 has the default zones (drop, block, public, ...)
+
+Use the graphical `firewall-config` tool to work with zones or the terminal `firewall-cmd`
+
+Use the --permanent switch to make changes survive reboot, then --reload to make the change now
+
+NOTE: there's not a ton here...
+
+## SSH Key based auth
+
+known_hosts: client compares server's key to this.
+authorized_keys: server compares user from client to this
+So, to move the public key over, use `ssh-copy-id`. This is the same as logging
+into the server and adding your public key `id_<protocol>.pub` to the
+`authorized_keys` file.
+
+# Stopped at "A Security-Enhanced Linux Primer"
