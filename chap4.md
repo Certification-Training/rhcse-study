@@ -116,4 +116,44 @@ So, to move the public key over, use `ssh-copy-id`. This is the same as logging
 into the server and adding your public key `id_<protocol>.pub` to the
 `authorized_keys` file.
 
-# Stopped at "A Security-Enhanced Linux Primer"
+# "A Security-Enhanced Linux Primer"
+
+The SELinux security model is based on subjects, objects, and actions. A
+subject is a process, such as a running command or an application such as the
+Apache web server in operation. An object is a file, a device, a socket, or in
+general any resource that can be accessed by a subject. An action is what may
+be done by the subject to the object.<Paste>
+
+A context is a label used by the SELinux security policy to determine wheter a
+subject's action on an object is allowed.
+
+SELinux stuff in /etc/selinux
+
+See current status with `sestatus`
+
+Change mode with `setenforce`
+
+Give users profiles:
+
+    semanage login -a -s user_u michael  # No sudo for you ****
+    semanage -d michael  # So sorry, here's your sudo back
+    semanage login -m -S targeted -s "user_u" -r s0 __default__
+
+There's a table 4-11 of user stuff. What I want to know is how this interacts with the `wheel` group.
+
+Use `getsebool` and `setsebool` to manage boolean settings
+
+Use `semanage boolean -l` to list all booleans
+
+    -rw-------. root root system_u:object_r:admin_home_t:s0 anaconda-ks.cfg
+
+`ld -Z` lists 4 SELinux thingies:
+
+- user: system_u)
+- role: object_r)
+- type: admin_home_t)
+- mls level: s0)
+
+You can use `chcon` to change the SELinux context
+
+# Stopped at "List and Identify SELinux File Contests"
