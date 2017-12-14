@@ -142,6 +142,7 @@ Give users profiles:
 There's a table 4-11 of user stuff. What I want to know is how this interacts with the `wheel` group.
 
 Use `getsebool` and `setsebool` to manage boolean settings
+Use `-P` to make it persistent
 
 Use `semanage boolean -l` to list all booleans
 
@@ -154,6 +155,34 @@ Use `semanage boolean -l` to list all booleans
 - type: admin_home_t)
 - mls level: s0)
 
-You can use `chcon` to change the SELinux context
+You can use `chcon` to change the SELinux context, but that won't survive a
+file relabeling. Instead, they want you to modify contexts in the SELinux
+policy with `semanage fcontext` and use `restorecon` to change file contexts.
 
-# Stopped at "List and Identify SELinux File Contests"
+The regular expression `/ftp(/.*)?` matches the `ftp/` directory and all files
+in it.
+
+Assign a type context of `public_content_t`:
+
+    semanage fcontext -a -t public_content_t '/ftp(/.*)?'
+    restorecon
+
+See a practical example of this:
+https://www.techrepublic.com/blog/linux-and-open-source/practical-selinux-for-the-beginner-contexts-and-labels/
+
+Use the `-Z` option on `ls`, `id`, `ps` to see different contexts.
+
+Here's another deep SELinux tutorial:
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/security-enhanced_linux/chap-security-enhanced_linux-selinux_context
+
+SELinux violations are in `/var/log/audit/audit.log`.
+
+Use `ausearch -m avc -c sudo` to see SELinux events associated with `sudo`. (avc
+stands for Access Vector Cache)
+
+Use `ausearch -m` to see all message types
+
+`sealert -a /var/log/audit/audit.log` will scan the audit log and try to figure
+out what's wrong. It's one to remember.
+
+# Stopped right before Ex 4.3
