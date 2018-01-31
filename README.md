@@ -14,3 +14,6 @@ vagrant up
 vagrant ssh
 ```
 
+## Labs
+
+https://www.safaribooksonline.com/library/view/rhcsarhce-red-hat/9780071841948/app_f.html#app_f

@@ -10,7 +10,8 @@ Vagrant.configure('2') do |config|
 
   config.vm.provider 'virtualbox' do |vb|
     # Want this on to work on bootloader stuff
-    vb.gui = false
+    # And GUI stuff :D
+    vb.gui = true
     # vb.gui = true
   end
 
