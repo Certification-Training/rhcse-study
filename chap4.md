@@ -20,13 +20,15 @@ Special bits
 
 Note:
 
-Even if a user doesn't have permission to write a file, but does on the directory, they can write the file anyway cause directory rights override file permissions
+Even if a user doesn't have permission to write a file, but does on the
+directory, they can write the file anyway cause directory rights override file
+permissions
 
 There are also more permissions usable with `lsattr` and `chattr`
 
 - `a`: append only
 - `d`: no dump, no backups with dump command (not installed by default on my test vm)
-- `e`: extend format: set with ext4 filesystem; an attribute that may not be removed (TODO: look this up?)
+- `e`: extend format: set with ext4 filesystem; an attribute that may not be removed (Don't worry about this)
 - `i`: immutable: no changes!
 
 There are other attributes, but not for ext4 and XFS filesystems
