@@ -12,7 +12,7 @@ Vagrant.configure('2') do |config|
     # Want this on to work on bootloader stuff
     # And GUI stuff :D
     vb.gui = true
-    # vb.gui = true
+    # vb.gui = false
   end
 
   config.vm.network :private_network, ip: '10.0.0.10'
