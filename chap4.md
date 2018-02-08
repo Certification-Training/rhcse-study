@@ -188,3 +188,19 @@ Use `ausearch -m` to see all message types
 out what's wrong. It's one to remember.
 
 # Stopped right before Ex 4.3
+
+Screw it, I'm tired of stuyding this. Going to the quiz now:
+
+1. chmod 600 question1
+2. chown professor:group question2
+3. chattr +a question3
+4. getfacl question4
+5. - looking at notes - setfacl -m g:managers:r /home/project/project5
+6. setfacl -x g:temps /home/project/secret6
+7. 80 (in /etc/services)
+8. - looking at notes - ???
+9. ssh-keygen -t dsa
+10. ~/.ssh/authorized_keys
+11. setenforce Enforcing (that was an interesting jaunt through searching my path...)
+12. - notes - semanage user -l
+13. getsebool -a
