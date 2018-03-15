@@ -1,0 +1,35 @@
+# Just install some helper programs so I can see wtf something did
+- name: Make sure ~/bin exists
+  file:
+    path: ~/bin
+    state: directory
+    recurse: true
+
+- name: Get file_stats.py (needs python 3)
+  get_url:
+    url: https://raw.githubusercontent.com/bbkane/Random-Scripts/master/file_stats.py
+    dest: ~/bin/file_stats.py
+    mode: 0755
+
+- name: Get Vim
+  become: true
+  become_user: root
+  yum:
+    name: vim
+    state: latest
+
+- name: Get Vim config (fast version)
+  get_url:
+    url: https://raw.githubusercontent.com/bbkane/nvim/master/init.vim
+    dest: ~/.vimrc
+
+- name: Make sure ~/.vim/plugin exists
+  file:
+    path: ~/.vim/plugin
+    state: directory
+    recurse: true
+
+- name: Get vim-commentary
+  get_url:
+    url: https://raw.githubusercontent.com/tpope/vim-commentary/master/plugin/commentary.vim
+    dest: ~/.vim/plugin/commentary.vim
