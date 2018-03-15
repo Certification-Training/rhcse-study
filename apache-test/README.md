@@ -17,3 +17,5 @@ http://localhost:8080/manual/ is my friend
 
 I can't find semanage (needed to to policy changes to directories so SELinux and Apache can work together)
 You can search with `yum whatprovides semanage` -> `policycoreutils-python`
+
+
