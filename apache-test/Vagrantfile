@@ -21,6 +21,7 @@ Vagrant.configure('2') do |config|
   config.vm.define :apache_test do |apache_test|
     apache_test.vm.hostname = 'apache_test'.tr('_', '-')
     apache_test.vm.network "forwarded_port", guest: 80, host: 8080
+    apache_test.vm.network "forwarded_port", guest: 443, host: 4430
     # Going to start allocating from this space... We use the 10. space internally
     apache_test.vm.network "private_network", ip: '172.16.10.10'
   end
