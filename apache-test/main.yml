@@ -5,3 +5,49 @@
     include_role:
       name: bbkane_playbook_debug
 
+  - name: Get Web Server Group
+    become: true
+    become_user: root
+    yum:
+      name: "@web-server"
+      state: latest
+
+  - name: start/enable service httpd and ensure it is not masked
+    become: true
+    become_user: root
+    systemd:
+      name: httpd
+      enabled: yes
+      masked: no
+      state: started
+
+  # Re-install Man pages
+  - name: Delete nerfed man pages
+    become: true
+    become_user: root
+    yum:
+      name: man-pages
+      state: absent
+  - name: Install man pages
+    become: true
+    become_user: root
+    yum:
+      name: man-pages
+      state: latest
+
+  - name: Add get_link bash function to root's ~/.bashrc
+    become: true
+    become_user: root
+    blockinfile:
+      path: ~/.bashrc
+      marker: "# {mark} ANSIBLE MANAGED ~/.bashrc BLOCK"
+      block: |
+        get_link() {
+            local -r document_root="/var/www/html"
+            local -r item="$1"
+            local -r full_path="$(readlink -f $item)"
+            local -r hostname="http://localhost:8080"
+            echo "$full_path" | sed "s|$document_root|$hostname|"
+        }
+
+
