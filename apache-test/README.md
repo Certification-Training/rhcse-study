@@ -28,7 +28,7 @@ cert or use Let's Encrypt to get one!
 Also, it appears `firewalld` is not running... I guess centos/7 doesn't load it
 by default or something...
 
-```
+```bash
 get_link() {
     local -r document_root="/var/www/html"
     local -r item="$1"
@@ -70,6 +70,10 @@ NOTE: I changed ServerName to 127.0.0.1:80 to shut up `httpd -S`
 
 Vhosts docs: http://localhost:8080/manual/vhosts/
 
+So you setup virtualhosts by making sure the <subdomain>.<domain> routes to the
+right IP (/etc/hosts / DNS) then Apache will read the subdomain and match to
+the right vhost
+
 - Create a conf file for it (/etc/httpd/conf.d/vhost-dummy.conf).
 - Add the stuff from the book:
 
@@ -96,6 +100,12 @@ semanage fcontext -a -t httpd_sys_content_t '/srv/dummy-host/www(/.*)?'
 restorecon -R /srv
 ```
 
+- Restart the httpd daemon
+
+```
+systemctl restart httpd
+```
+
 - Add to my Mac's /etc/hosts
 
 ```
@@ -115,8 +125,16 @@ dumb reason: https://apple.stackexchange.com/a/158166/249419
 
 Then you can reach http://dummy-host.example.com:8080/
 
+I'm trying do to the smae thing for luv-linex vhost, but I missed the dash.
+Notes: make sure DNS is right. 
+
+### semanage fcontext
+
+- Use `semanage fcontext -l` and grep to see what you set
+- Use `semanage fcontext -d -t httpd_sys_content_t <regex>` to delete stuff
+- Use `semanage fcontext -a -t httpd_sys_content_t <regex>` to add
+
 ## HTTPS
 
 Check mod status with `httpd -M`
 
-Stopped at Secure Virtual Hosts
