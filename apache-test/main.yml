@@ -2,6 +2,8 @@
   gather_facts: false
   tasks:
   - name: Get Debug stuff
+    become: true
+    become_user: root
     include_role:
       name: bbkane_playbook_debug
 
@@ -9,8 +11,11 @@
     become: true
     become_user: root
     yum:
-      name: "@web-server"
+      name: "{{ item }}"
       state: latest
+    with_items:
+      - "@web-server"
+      - "policycoreutils-python"  # semanage
 
   - name: start/enable service httpd and ensure it is not masked
     become: true
@@ -50,4 +55,7 @@
             echo "$full_path" | sed "s|$document_root|$hostname|"
         }
 
+        # set today to the date
+        today=$(date +%Y-%m-%d)
+        export today
 

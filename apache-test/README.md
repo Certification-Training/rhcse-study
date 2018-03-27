@@ -39,3 +39,84 @@ get_link() {
 ```
 
 `yum reinstall man-pages` - wtf do they not keep these installed?
+
+Okay, I now have an Ansible playbook to set up all this stuff for me
+
+Check Apache syntax with `httpd -t` or `httpd -S`
+
+## Using user content
+
+- Change /etc/httpd/conf.d/userdir.conf and add UserDir public_html
+- Give apache user rights to /home/vagrant and /home/vagrant/public_html
+
+```
+setfacl -m u:apache:x /home/vagrant
+setfacl -m u:apache:x /home/vagrant/public_html
+```
+
+NOTE: might need to change permissions on docs craeated in there too. Nope. Don't need to
+
+- `setsebool -P httpd_enable_homedirs 1`
+
+The `IncludesNoExec` stops script execution. I might want to change that...
+
+I can use the `mod_authnz_ldap` for LDAP auth
+
+## VirtualHosts
+
+To use Vhosts, I need to make sure the client includes the IP address with the FQDN
+
+NOTE: I changed ServerName to 127.0.0.1:80 to shut up `httpd -S`
+
+Vhosts docs: http://localhost:8080/manual/vhosts/
+
+- Create a conf file for it (/etc/httpd/conf.d/vhost-dummy.conf).
+- Add the stuff from the book:
+
+```
+<Directory "/srv/dummy-host/www">
+    Require all granted
+</Directory>
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@dummy-host.example.com
+    DocumentRoot /srv/dummy-host/www
+    ServerName dummy-host.example.com
+    ServerAlias www.dummy-host.example.com
+    ErrorLog logs/dummy-host.example.com-error_log
+    CustomLog logs/dummy-host.example.com-access_log common
+</VirtualHost>
+```
+
+- Create the directory and set the context for it
+
+```
+mkdir -p /srv/dummy-host/www
+semanage fcontext -a -t httpd_sys_content_t '/srv/dummy-host/www(/.*)?'
+restorecon -R /srv
+```
+
+- Add to my Mac's /etc/hosts
+
+```
+# This is for Apache tests with VMs
+127.0.0.1       dummy-host.example.com dummy-host
+```
+
+- flush DNS cache (Mac side):
+
+```
+sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
+```
+
+So this works, but nslookup and friends won't listen to /etc/hosts for some
+dumb reason: https://apple.stackexchange.com/a/158166/249419
+
+Then you can reach http://dummy-host.example.com:8080/
+
+## HTTPS
+
+Check mod status with `httpd -M`
+
+Stopped at Secure Virtual Hosts
