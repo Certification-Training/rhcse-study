@@ -17,6 +17,22 @@
       - "@web-server"
       - "policycoreutils-python"  # semanage
 
+  - name: Push flask app
+    become: true
+    become_user: root
+    copy:
+      src: ./flask_app.py
+      dest: ~/flask_app.py
+
+  - name: Install miniconda
+    become: true
+    include_role:
+      name: miniconda3
+    vars:
+      miniconda3_install_dir: '/opt/miniconda3'
+      miniconda3_users_with_bash_help:
+        - vagrant
+
   - name: start/enable service httpd and ensure it is not masked
     become: true
     become_user: root

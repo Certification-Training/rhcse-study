@@ -1,0 +1,50 @@
+---
+
+- name: Install Miniconda3 dependencies
+  become: true
+  become_user: root
+  yum:
+    name: bzip2
+    state: latest
+
+# TODO: Add check guard to check if already installed before downloading this
+- name: Download Miniconda Install script
+  get_url:
+    # NOTE: the newer version breaks!
+    url: https://repo.continuum.io/miniconda/Miniconda3-4.3.31-Linux-x86_64.sh
+    dest: /tmp/Miniconda3-4.3.31-Linux-x86_64.sh
+    mode: 0444  # Make it ro for everyone (BASH calls it as an arg and no needs to write to it)
+
+- name: Install Miniconda3
+  become: true
+  become_user: root
+  command: bash /tmp/Miniconda3-4.3.31-Linux-x86_64.sh -b -p "{{ miniconda3_install_dir }}"
+  args:
+    chdir: /tmp
+    creates: "{{ miniconda3_install_dir }}"
+
+- name: Add read to all, search to directories
+  become: true
+  become_user: root
+  file:
+    dest: "{{ miniconda3_install_dir }}"
+    mode: "go+rX"
+    recurse: true
+
+- name: Remove write permissions to directory
+  become: true
+  become_user: root
+  file:
+    dest: "{{ miniconda3_install_dir }}"
+    mode: "go-w"
+    recurse: true
+- debug:
+    msg: "Users should add {{ miniconda3_install_dir }} to their PATH"
+
+- name: Add user config for users
+  include_tasks: user_install.yml
+  # TODO: use a default empty list instead of a defined check (identity states > ptr semantics)
+  when: miniconda3_users_with_bash_help is defined
+  with_items: "{{ miniconda3_users_with_bash_help }}"
+  loop_control:
+    loop_var: user

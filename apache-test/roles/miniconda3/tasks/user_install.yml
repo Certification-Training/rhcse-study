@@ -1,0 +1,32 @@
+---
+- name: Make sure ~/.config exists
+  become: true
+  become_user: "{{ user }}"
+  file:
+    path: ~/.config
+    state: directory
+
+- name: Push miniconda management script
+  become: true
+  become_user: "{{ user}}"
+  template:
+    src: miniconda3_bash_tools.sh.j2
+    dest: ~/.config/miniconda3_bash_tools.sh
+
+# # TODO: This should be a templated file
+# - name: Push miniconda management script
+#   become: true
+#   become_user: "{{ user }}"
+#   copy:
+#     force: false  # Don't replace the remote one if things are different
+#     src: ~/.config/miniconda3_bash_tools.sh
+#     dest: ~/.config/miniconda3_bash_tools.sh
+
+- name: Make sure BASH can reach miniconda3_bash_tools
+  become: true
+  become_user: "{{ user }}"
+  blockinfile:
+    marker: '# -- {mark} ANSIBLE miniconda3 config'
+    path: ~/.bashrc
+    block: |
+      source ~/.config/miniconda3_bash_tools.sh

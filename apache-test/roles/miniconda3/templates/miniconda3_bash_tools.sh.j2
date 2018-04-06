@@ -1,0 +1,29 @@
+#!/bin/bash
+
+miniconda3_bin_dir="{{ miniconda3_install_dir }}/bin"
+
+add_miniconda3() {
+    if [[ "$PATH" != *"${miniconda3_bin_dir}"* ]]; then
+        export PATH="${miniconda3_bin_dir}:$PATH"
+    fi
+}
+
+rm_miniconda3() {
+    export PATH=$(echo $PATH | sed 's|'"${miniconda3_bin_dir}:"'||g')
+}
+
+# take advantage of the fact that the conda env is the same
+# as the current dir most of the time
+alias source_activate_pwd='source activate $(basename $(pwd))'
+
+# Example: conda_create_pwd flask Flask-WTF
+conda_create_pwd() {
+    conda create --name "$(basename $(pwd))" python=3 "$@"
+}
+
+conda_remove_pwd() {
+    conda remove --name "$(basename $(pwd))" --all
+}
+
+# add it by default
+add_miniconda3
