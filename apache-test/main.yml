@@ -16,6 +16,7 @@
     with_items:
       - "@web-server"
       - "policycoreutils-python"  # semanage
+      - tree
 
   - name: start/enable service httpd and ensure it is not masked
     become: true
