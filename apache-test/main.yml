@@ -16,6 +16,7 @@
     with_items:
       - "@web-server"
       - "policycoreutils-python"  # semanage
+      - tree
 
   - name: Push flask app
     become: true
